@@ -1,14 +1,20 @@
 <html>
-    <head>
-        <title>Odin's First Webpage</title>
-    </head>
-    <body><br />
-     <button onclick="myClick()">Click me</button>   
-     <div id="total">1</div>
-    </body>
-    <script>
-        function myClick() {
-            document.getElementById("total").innerText  = Number(document.getElementById("total").innerText)+1;
-        }
-    </script>
-    </html>  
+  <head>
+    <title>Odin's First Webpage</title>
+    <script src="./script.js"></script>
+    <style>
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <br />
+    <button onclick="new Click(1)">Click me for +1 click</button>
+    <button onclick="new Click(20)">Click me for +20 clicks</button>
+    <button
+      onclick="new Click(parseInt(prompt('Enter how many clicks you want'), 10))"
+    >
+      Click me for custom clicks
+    </button>
+    <div id="total">0</div>
+  </body>
+</html>
