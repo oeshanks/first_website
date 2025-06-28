@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Games</title>
+    <style>
+        .mode-selector {
+            margin: 20px 0;
+            display: none;
+        }
+        .mode-selector.active {
+            display: block;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin-top: 50px;
+        }
+        .game-selector {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .game-button {
+            font-size: 20px;
+            margin: 10px;
+            padding: 15px 30px;
+            cursor: pointer;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .game-button:hover {
+            background-color: #1976D2;
+        }
+        .choice-button {
+            font-size: 18px;
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .choice-button:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+        .choice-display {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #666;
+        }
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+        .tic-tac-toe {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #333;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .clicker-container {
+            text-align: center;
+            margin: 20px auto;
+        }
+        .click-button {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .click-button:active {
+            transform: scale(0.95);
+        }
+        .upgrade-button {
+            font-size: 16px;
+            margin: 5px;
+            padding: 8px 16px;
+            cursor: pointer;
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .upgrade-button:hover {
+            background-color: #7b1fa2;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-selector" id="game-selector">
+        <h1>Choose a Game</h1>
+        <button class="game-button" onclick="showGame('rps')">Rock Paper Scissors</button>
+        <button class="game-button" onclick="showGame('ttt')">Tic Tac Toe</button>
+        <button class="game-button" onclick="showGame('clicker')">Clicker Game</button>
+        <button class="game-button" onclick="window.location.href='pokemon-fusion.html'">Pokemon Fusion</button>
+        <button class="game-button" onclick="launchMinecraft()">Minecraft</button>
+        <button class="game-button" onclick="window.location.href='https://chess.com'">Chess</button>
+        <button class="game-button" onclick="window.location.href='https://www.amazon.com/s?k=chocolate+bar&crid=ZAI3V0W0T4WT&sprefix=chocolate+%2Caps%2C170&ref=nb_sb_ss_ts-doa-p_2_10'">Chocolate</button>
+        <button class="game-button" onclick="window.location.href='https://github.com/oeshanks'">My GitHub</button>
+    </div>
+
+    <div class="game-container hidden" id="rps-game">
+        <h1>Rock Paper Scissors</h1>
+        <button class="game-button" onclick="backToMenu()">Back to Menu</button>
+        <div>
+            <button class="choice-button" onclick="playRPS('rock')">Rock</button>
+            <button class="choice-button" onclick="playRPS('paper')">Paper</button>
+            <button class="choice-button" onclick="playRPS('scissors')">Scissors</button>
+        </div>
+        <p id="user-choice" class="choice-display">You chose: </p>
+        <p id="computer-choice" class="choice-display">Computer chose: </p>
+        <p id="result">Make your choice!</p>
+        <p id="score">Score - You: 0 Computer: 0</p>
+    </div>
+
+    <div class="game-container hidden" id="ttt-game">
+        <h1>Tic Tac Toe</h1>
+        <button class="game-button" onclick="backToMenu()">Back to Menu</button>
+        <div class="mode-selector" id="mode-selector">
+            <h2>Select Game Mode</h2>
+            <button class="game-button" onclick="setGameMode('single')">vs Computer</button>
+            <button class="game-button" onclick="setGameMode('multi')">2 Players</button>
+        </div>
+        <div class="tic-tac-toe" id="board">
+            <div class="cell" onclick="makeMove(0)"></div>
+            <div class="cell" onclick="makeMove(1)"></div>
+            <div class="cell" onclick="makeMove(2)"></div>
+            <div class="cell" onclick="makeMove(3)"></div>
+            <div class="cell" onclick="makeMove(4)"></div>
+            <div class="cell" onclick="makeMove(5)"></div>
+            <div class="cell" onclick="makeMove(6)"></div>
+            <div class="cell" onclick="makeMove(7)"></div>
+            <div class="cell" onclick="makeMove(8)"></div>
+        </div>
+        <p id="ttt-status">Select game mode to start</p>
+        <button class="game-button" onclick="resetTicTacToe()">Reset Game</button>
+    </div>
+
+    <div class="game-container hidden" id="clicker-game">
+        <h1>Clicker Game</h1>
+        <button class="game-button" onclick="backToMenu()">Back to Menu</button>
+        <div class="clicker-container">
+            <h2>Points: <span id="points">0</span></h2>
+            <h3>Points per Click: <span id="pointsPerClick">1</span></h3>
+            <button class="click-button" onclick="addPoints()">CLICK ME!</button>
+            <div>
+                <button class="upgrade-button" onclick="upgradeClick()">Upgrade Click (Cost: <span id="upgradeCost">10</span>)</button>
+                <button class="upgrade-button" onclick="buyAutoClicker()">Buy Auto Clicker (Cost: <span id="autoClickerCost">50</span>)</button>
+            </div>
+            <p>Auto Clickers: <span id="autoClickers">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        let playerScore = 0;
+        let computerScore = 0;
+        let currentPlayer = 'X';
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let gameMode = null;
+        let gameActive = false;
+        let points = 0;
+        let pointsPerClick = 1;
+        let upgradeCost = 10;
+        let autoClickers = 0;
+        let autoClickerCost = 50;
+        let autoClickerInterval;
+
+        function showGame(game) {
+            document.getElementById('game-selector').classList.add('hidden');
+            document.getElementById('rps-game').classList.add('hidden');
+            document.getElementById('ttt-game').classList.add('hidden');
+            document.getElementById('clicker-game').classList.add('hidden');
+            
+            if (game === 'rps') {
+                document.getElementById('rps-game').classList.remove('hidden');
+            } else if (game === 'ttt') {
+                document.getElementById('ttt-game').classList.remove('hidden');
+                document.getElementById('mode-selector').classList.add('active');
+            } else if (game === 'clicker') {
+                document.getElementById('clicker-game').classList.remove('hidden');
+                startAutoClickers();
+            }
+        }
+
+        function backToMenu() {
+            document.getElementById('game-selector').classList.remove('hidden');
+            document.getElementById('rps-game').classList.add('hidden');
+            document.getElementById('ttt-game').classList.add('hidden');
+            document.getElementById('clicker-game').classList.add('hidden');
+            gameMode = null;
+            gameActive = false;
+            resetTicTacToe();
+            if (autoClickerInterval) {
+                clearInterval(autoClickerInterval);
+            }
+        }
+
+        function playRPS(userChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            let result = '';
+
+            if (userChoice === computerChoice) {
+                result = 'It\'s a tie!';
+            } else if (
+                (userChoice === 'rock' && computerChoice === 'scissors') ||
+                (userChoice === 'paper' && computerChoice === 'rock') ||
+                (userChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                result = 'You win!';
+                playerScore++;
+            } else {
+                result = 'Computer wins!';
+                computerScore++;
+            }
+
+            document.getElementById('user-choice').textContent = `You chose: ${userChoice}`;
+            document.getElementById('computer-choice').textContent = `Computer chose: ${computerChoice}`;
+            document.getElementById('result').textContent = result;
+            document.getElementById('score').textContent = `Score - You: ${playerScore} Computer: ${computerScore}`;
+        }
+
+        function setGameMode(mode) {
+            gameMode = mode;
+            gameActive = true;
+            document.getElementById('mode-selector').classList.remove('active');
+            resetTicTacToe();
+        }
+
+        function makeMove(index) {
+            if (!gameActive) {
+                document.getElementById('ttt-status').textContent = "Please select game mode first!";
+                return;
+            }
+
+            if (board[index] === '') {
+                board[index] = currentPlayer;
+                document.getElementsByClassName('cell')[index].textContent = currentPlayer;
+                
+                if (checkWinner()) {
+                    document.getElementById('ttt-status').textContent = `Player ${currentPlayer} wins!`;
+                    gameActive = false;
+                    disableBoard();
+                    return;
+                } 
+                
+                if (board.every(cell => cell !== '')) {
+                    document.getElementById('ttt-status').textContent = "It's a tie!";
+                    gameActive = false;
+                    return;
+                }
+
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                document.getElementById('ttt-status').textContent = `Player ${currentPlayer}'s turn`;
+
+                if (gameMode === 'single' && currentPlayer === 'O' && gameActive) {
+                    setTimeout(() => {
+                        makeComputerMove();
+                    }, 500);
+                }
+            }
+        }
+
+        function makeComputerMove() {
+            const emptyCells = board.reduce((cells, cell, index) => {
+                if (cell === '') cells.push(index);
+                return cells;
+            }, []);
+
+            if (emptyCells.length > 0) {
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                makeMove(randomIndex);
+            }
+        }
+
+        function checkWinner() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            return winPatterns.some(pattern => {
+                return pattern.every(index => {
+                    return board[index] === currentPlayer;
+                });
+            });
+        }
+
+        function disableBoard() {
+            const cells = document.getElementsByClassName('cell');
+            for (let cell of cells) {
+                cell.style.pointerEvents = 'none';
+            }
+        }
+
+        function resetTicTacToe() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            const cells = document.getElementsByClassName('cell');
+            for (let cell of cells) {
+                cell.textContent = '';
+                cell.style.pointerEvents = 'auto';
+            }
+            gameActive = gameMode !== null;
+            document.getElementById('ttt-status').textContent = gameMode ? "Player X's turn" : "Select game mode to start";
+        }
+
+        function launchMinecraft() {
+            window.location.href = "minecraft://";
+        }
+
+        function addPoints() {
+            points += pointsPerClick;
+            updateDisplay();
+        }
+
+        function upgradeClick() {
+            if (points >= upgradeCost) {
+                points -= upgradeCost;
+                pointsPerClick++;
+                upgradeCost = Math.floor(upgradeCost * 1.5);
+                updateDisplay();
+            }
+        }
+
+        function buyAutoClicker() {
+            if (points >= autoClickerCost) {
+                points -= autoClickerCost;
+                autoClickers++;
+                autoClickerCost = Math.floor(autoClickerCost * 1.5);
+                updateDisplay();
+                startAutoClickers();
+            }
+        }
+
+        function startAutoClickers() {
+            if (autoClickerInterval) {
+                clearInterval(autoClickerInterval);
+            }
+            if (autoClickers > 0) {
+                autoClickerInterval = setInterval(() => {
+                    points += autoClickers;
+                    updateDisplay();
+                }, 1000);
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('points').textContent = points;
+            document.getElementById('pointsPerClick').textContent = pointsPerClick;
+            document.getElementById('upgradeCost').textContent = upgradeCost;
+            document.getElementById('autoClickerCost').textContent = autoClickerCost;
+            document.getElementById('autoClickers').textContent = autoClickers;
+        }
+    </script>
+</body>
+</html>

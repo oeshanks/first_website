@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pokemon Fusion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin-top: 50px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        select {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .fusion-container {
+            margin: 20px;
+            position: relative;
+            width: 500px;
+            height: 400px;
+            margin: 0 auto;
+        }
+        .fusion-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            overflow: hidden;
+        }
+        .back-button {
+            font-size: 20px;
+            margin: 10px;
+            padding: 15px 30px;
+            cursor: pointer;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .fuse-button {
+            font-size: 18px;
+            margin: 20px;
+            padding: 12px 25px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .fusion-name {
+            font-size: 24px;
+            margin: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        /* Remove password-related styles */
+        .password-overlay,
+        .password-box,
+        .password-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Remove password overlay div -->
+    <div class="container">
+        <h1>Pokemon Fusion Generator</h1>
+        <button class="back-button" onclick="window.location.href='menu.html'">Back to Menu</button>
+        <div>
+            <select id="pokemon1"></select>
+            <select id="pokemon2"></select>
+            <button class="fuse-button" onclick="updateFusion()">Fuse!</button>
+        </div>
+        <div class="fusion-name" id="fusionName"></div>
+        <div class="fusion-container">
+            <iframe id="fusion" class="fusion-frame" scrolling="no"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const pokemonList = [];
+        
+        // Call initialize directly
+        initialize();
+        
+        async function initialize() {
+            try {
+                const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151');
+                const data = await response.json();
+                pokemonList.push(...data.results);
+                
+                const selects = [document.getElementById('pokemon1'), document.getElementById('pokemon2')];
+                selects.forEach(select => {
+                    pokemonList.forEach((pokemon, index) => {
+                        const option = document.createElement('option');
+                        option.value = index + 1;
+                        option.textContent = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+                        select.appendChild(option);
+                    });
+                    // Set random initial value
+                    select.value = Math.floor(Math.random() * 151) + 1;
+                });
+                
+                // Trigger initial fusion
+                updateFusion();
+            } catch (error) {
+                console.error('Error fetching Pokemon:', error);
+            }
+        }
+
+        async function updateFusion() {
+            const pokemon1Id = document.getElementById('pokemon1').value;
+            const pokemon2Id = document.getElementById('pokemon2').value;
+            const pokemon1Name = document.getElementById('pokemon1').selectedOptions[0].text;
+            const pokemon2Name = document.getElementById('pokemon2').selectedOptions[0].text;
+            
+            const fusionUrl = `https://aegide.github.io/custom-sprite-generator/?p1=${pokemon1Id}&p2=${pokemon2Id}`;
+            const fusionFrame = document.getElementById('fusion');
+            
+            // Update iframe source and adjust its size for custom sprite generator
+            fusionFrame.src = fusionUrl;
+            fusionFrame.style.width = '500px';
+            fusionFrame.style.height = '400px';
+            
+            // Create and display fusion name
+            const fusionName = pokemon1Name.slice(0, Math.ceil(pokemon1Name.length/2)) + 
+                             pokemon2Name.slice(Math.floor(pokemon2Name.length/2));
+            document.getElementById('fusionName').textContent = fusionName;
+        }
+    </script>
+</body>
+</html>
